@@ -1,0 +1,50 @@
+.main {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.img-container {
+    width: 65%;
+    margin: auto;
+    text-align: center;
+    background-size: 50% !important;
+    height: 250px;
+    position: relative;
+    margin-top: 0px;
+}
+
+.main-img {
+    width: 300px;
+    margin-top: 5px;
+}
+
+.left-arrow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 140px;
+    margin-left: -30px;
+}
+
+.right-arrow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin-top: 140px;
+    margin-left: 0px;
+}
+
+.user-info {
+    background-color: aquamarine;
+    height: 300px;
+    width: 30%;
+    margin: auto;
+    margin-left: 5%;
+    border-radius: 10px;
+}
+
+.user-info-parameter {
+    margin-top: 70px;
+    margin-left: 5%;
+}
