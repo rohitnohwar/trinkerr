@@ -34,7 +34,7 @@ function Main() {
       for(let i=0; i<response.data.posts.length; i++){
         arr.push(img[response.data.posts[i]])
       }
-      await setIndex(response.data.index)
+      setIndex(response.data.index)
       if(response.data.posts?.length-1===response.data.index){
         //setAllRated(true)
       }
@@ -113,10 +113,10 @@ function Main() {
   const previous = async() => {
     setDeletePermit(true)
     if(allRated===false && imgArr.length>0){
-      await setImgArr(imgArr.filter((val, ind)=>{
+      setImgArr(imgArr.filter((val, ind)=>{
         return ind!==index
       }))
-      await notify(`${imgArr[index].image} removed`)
+      notify(`${imgArr[index].image} removed`)
       setIndex(imgArr.length-1===index?index-1:index)
       if(imgArr.length-1===index){
         setAllRated(true)
