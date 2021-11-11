@@ -72,6 +72,9 @@
 }
 
 @media screen and (max-width:900px) {
+    .logout-button-div {
+        margin-top: 20px;
+    }
     .img-container {
         width: 100%;
         margin-top: 30px;
