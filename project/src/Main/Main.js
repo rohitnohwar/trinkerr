@@ -108,7 +108,6 @@ function Main() {
       setOpen(true)
     }
     setNextTrigger(nextTrigger===true?false:true)
-    clearInterval(timer)
   }
 
   const previous = async() => {
@@ -144,16 +143,6 @@ function Main() {
     }
   },[nextTrigger])
   
-  /*let timer=setInterval(async()=>{
-    if(allRated===false && imgArr.length-1>=index){
-      clearInterval(timer)
-      await next()
-      clearInterval(timer)
-      if(index===imgArr.length-1){
-        setAllRated(true)
-      }
-    }
-  },5000)*/
 
   const reset=async()=>{
     const data={
@@ -167,25 +156,16 @@ function Main() {
   }
 
 
-  /*let timer=(async()=>{
-    clearInterval(timer)
-    if(time===0){
-      await next()
-      time=5
-    }
-    else {
-      time=time-1
-    }
-    clearInterval(timer)
-  },1000)*/
 
-  const inte=()=>{
-    clearInterval(timer)
-    if(time>0){
-      setTime(time-1)
-    }
-    else {
-      setTime(5)
+
+  useEffect(() => {
+    let interval = null;
+    if (time>0) {
+      interval = setInterval(() => {
+        setTime(time - 1);
+      }, 1000);
+    } else {
+      setTime(5);
       if(allRated===false && imgArr.length-1>=index){
         next()
         if(index===imgArr.length-1){
@@ -193,10 +173,12 @@ function Main() {
         }
       }
     }
-    clearInterval(timer)
-  }
+    return () => clearInterval(interval);
+  }, [time]);
 
-  let timer=setInterval(inte,1000)
+  useEffect(()=>{
+    setTime(5)
+  },[nextTrigger, deleteTrigger])
   
 
 if(auth){
@@ -220,7 +202,7 @@ if(auth){
         {index}
         <br></br>
         {imgArr.length}*/}
-        {time}
+
         <div className="logout-button-div"><button className="login-button reset-button" onClick={reset}>Reset images</button></div>
     </div>
   );
