@@ -75,29 +75,7 @@ function Main() {
   const [nextTrigger, setNextTrigger]=useState(true)
   const [nextPermit, setNextPermit]=useState(false)
 
-
- 
-
-
-    /*let timer=setInterval(()=>{
-      if(imgArr.length>0 && index!==imgArr.length-1){
-        setIndex((imgArr.length===0 || index===imgArr.length-1)?index:index+1)
-        clearInterval(timer)
-      }
-      else if(notifyBool===true) {
-        notify("You have rated all the images, thank you.")
-        clearInterval(timer)
-      }
-    },5000)*/
-
   const remove=async()=>{
-    /*await setIndex((index===imgArr.length-1)?index-1:index)
-    let imgA=[]
-    for(let i=0; i<imgArr.length; i++){
-      if(index!==i){
-        imgA.push(imgArr[i])
-      }
-    }*/
     const data={
       number:parseInt(Cookies.get("trinkerrNumber")),
       posts:imgArr,
