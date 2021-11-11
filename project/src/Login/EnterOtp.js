@@ -7,7 +7,7 @@ function EnterOtp(props) {
     <form method="POST">
         <div><input type="text" placeholder="Enter OTP" className="login-textfield" 
         value={props.otp} onChange={props.onOtpChange}></input></div>
-        <div><button className="login-button">Login</button></div>
+        <div><button className="login-button" onClick={props.handleClick}>Login</button></div>
     </form>
   );
 }

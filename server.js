@@ -48,7 +48,7 @@ app.post("/register", function(req, res){
                             index:0
                         });
                         newUser.save();
-                        res.json({message:"User account created"});
+                        res.json({message:"User account created", name:req.body.name, number:req.body.number});
                     }
                 
             }

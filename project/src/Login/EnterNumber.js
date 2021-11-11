@@ -7,7 +7,7 @@ function EnterNumber(props) {
     <form method="POST">
         <div><input name="number" type="text" placeholder="Enter phone number" className="login-textfield"
         value={props.data.number} onChange={props.onDataChange}></input></div>
-        <div><button className="login-button" onClick={props.handleClick}>Send OTP</button></div>
+        <div><button className="login-button" id="sign-in-button" onClick={(e)=>props.handleClick(e)}>Send OTP</button></div>
     </form>
   );
 }

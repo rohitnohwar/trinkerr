@@ -138,6 +138,7 @@ function Main() {
 
   const previous = async() => {
     //await clearInterval(timer)
+    await clearInterval(timer)
     await setDeletePermit(true)
     if(allRated===false){
       if(imgArr.length-1===index){
@@ -152,8 +153,8 @@ function Main() {
     else if(allRated===true){
       setOpen(true)
     }
-
-    return () => clearInterval(timer);
+    await clearInterval(timer)
+    //return () => clearInterval(timer);
   }
 
   useEffect(async()=>{

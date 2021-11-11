@@ -11,7 +11,7 @@ function EnterNumber(props) {
         <div><input name="number" type="text" placeholder="Enter phone number" minLength="0" maxLength="10" steps="0"
         className="login-textfield" value={props.data.number} onChange={props.onDataChange}></input></div>
         
-        <div><button className="login-button" onClick={props.handleClick}>Send OTP</button></div>
+        <div><button className="login-button" id="sign-in-button" onClick={props.handleClick}>Send OTP</button></div>
     </form>
   );
 }
