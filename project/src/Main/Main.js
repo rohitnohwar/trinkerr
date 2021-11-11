@@ -178,7 +178,7 @@ function Main() {
 
   useEffect(()=>{
     setTime(5)
-  },[nextTrigger, deleteTrigger])
+  },[nextTrigger, deleteTrigger, index])
   
 
 if(auth){
