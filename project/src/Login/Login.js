@@ -66,10 +66,11 @@ function Login() {
     document.body.style.cursor='default';
 }
 
-let temp
-
-
-
+const emergencyLogin=async()=>{
+  await Cookies.set("trinkerrName", "Emergency");
+  await Cookies.set("trinkerrNumber", "Emergency");
+  navigate("/main");
+}
 
 
 const handleSendOtp = async (e) => {
@@ -174,6 +175,7 @@ const ConfigureCaptcha = () => {
         </div>
 
         <div><Link to="/register">Not registered yet? Register instead.</Link></div>
+        <div style={{width:"fit-content", marginTop:"10px"}} onClick={emergencyLogin}>Emergeny login (OTP limit per phone number per day is 5 in firebase)</div>
         <ToastContainer theme="colored"/>
 
     </div>
