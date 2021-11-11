@@ -132,12 +132,12 @@ function Main() {
   }
 
   const previous = async() => {
-    clearInterval(timer)
     setDeletePermit(true)
     if(allRated===false && imgArr.length>0){
       await setImgArr(imgArr.filter((val, ind)=>{
         return ind!==index
       }))
+      await notify(`${imgArr[index].image} removed`)
       setIndex(imgArr.length-1===index?index-1:index)
       if(imgArr.length-1===index){
         setAllRated(true)
@@ -148,7 +148,6 @@ function Main() {
       setOpen(true)
     }
     setDeleteTrigger(deleteTrigger===true?false:true)
-    clearInterval(timer)
   }
 
 
