@@ -165,10 +165,10 @@ app.post("/reset", async function(req, res){
 const port = process.env.PORT || 3001;
 
 if(process.env.NODE_ENV==="production"){
-    app.use(express.static("client/build"));
+    app.use(express.static("project/build"));
 
     app.get("*", function(req, res){
-        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+        res.sendFile(path.resolve(__dirname, "project", "build", "index.html"));
     });
 }
 
