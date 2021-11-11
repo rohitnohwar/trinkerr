@@ -74,6 +74,7 @@ function Main() {
   const [deletePermit, setDeletePermit]=useState(false)
   const [nextTrigger, setNextTrigger]=useState(true)
   const [nextPermit, setNextPermit]=useState(false)
+  const [time, setTime]=useState(5)
 
   const remove=async()=>{
     const data={
@@ -107,11 +108,10 @@ function Main() {
       setOpen(true)
     }
     setNextTrigger(nextTrigger===true?false:true)
+    clearInterval(timer)
   }
 
   const previous = async() => {
-    await clearInterval(timer)
-    timer=setInterval(timer,5000)
     setDeletePermit(true)
     if(allRated===false && imgArr.length>0){
       await setImgArr(imgArr.filter((val, ind)=>{
@@ -128,8 +128,6 @@ function Main() {
       setOpen(true)
     }
     setDeleteTrigger(deleteTrigger===true?false:true)
-    await clearInterval(timer)
-    timer=setInterval(timer,5000)
   }
 
 
@@ -146,19 +144,16 @@ function Main() {
     }
   },[nextTrigger])
   
-  let timer=setInterval(async()=>{
-    await clearInterval(timer)
-    timer=setInterval(timer,5000)
-    await clearInterval(timer)
+  /*let timer=setInterval(async()=>{
     if(allRated===false && imgArr.length-1>=index){
+      clearInterval(timer)
       await next()
+      clearInterval(timer)
       if(index===imgArr.length-1){
         setAllRated(true)
       }
     }
-    await clearInterval(timer)
-    timer=setInterval(timer,5000)
-  },5000)
+  },5000)*/
 
   const reset=async()=>{
     const data={
@@ -171,6 +166,7 @@ function Main() {
     })
   }
 
+
   /*let timer=(async()=>{
     clearInterval(timer)
     if(time===0){
@@ -182,6 +178,25 @@ function Main() {
     }
     clearInterval(timer)
   },1000)*/
+
+  const inte=()=>{
+    clearInterval(timer)
+    if(time>0){
+      setTime(time-1)
+    }
+    else {
+      setTime(5)
+      if(allRated===false && imgArr.length-1>=index){
+        next()
+        if(index===imgArr.length-1){
+          setAllRated(true)
+        }
+      }
+    }
+    clearInterval(timer)
+  }
+
+  let timer=setInterval(inte,1000)
   
 
 if(auth){
@@ -205,6 +220,7 @@ if(auth){
         {index}
         <br></br>
         {imgArr.length}*/}
+        {time}
         <div className="logout-button-div"><button className="login-button reset-button" onClick={reset}>Reset images</button></div>
     </div>
   );
