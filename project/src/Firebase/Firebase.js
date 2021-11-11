@@ -1,13 +1,14 @@
-import firebase from "firebase/compat/app"
+import  firebase from "firebase/app";
+import "firebase/auth"
 
-var config={
-    apiKey: "AIzaSyCs75qwNbxzW8OQLjBAnawEQwic0l1hfCM",
-    authDomain: "trinkerr-4eddd.firebaseapp.com",
-    projectId: "trinkerr-4eddd",
-    storageBucket: "trinkerr-4eddd.appspot.com",
-    messagingSenderId: "416219481816",
-    appId: "1:416219481816:web:e31bec60022e290890b9ad"
+var firebaseConfig={
+    apiKey: "AIzaSyCsF5T3KO50vNtJYthoROpEh2XyXHs-Bvw",
+    authDomain: "trinkerr2.firebaseapp.com",
+    projectId: "trinkerr2",
+    storageBucket: "trinkerr2.appspot.com",
+    messagingSenderId: "344451265553",
+    appId: "1:344451265553:web:d7f6b0c27ac718ed62edb0"
 }
 
-firebase.initializeApp(config);
-export default firebase
+firebase.initializeApp(firebaseConfig);
+export default firebase;

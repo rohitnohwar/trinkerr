@@ -28,7 +28,7 @@ export default function CustomizedDialogs({ open, setOpen }) {
     <div>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} >
         <div style={{display:"flex", justifyContent:"flex-end"}}><CloseIcon onClick={handleClose}/></div>
-        <MuiDialogContent style={{ margin: "auto", textAlign: 'center', height:"350px", width:"90%"}}>
+        <MuiDialogContent style={{ margin: "auto", textAlign: 'center', height:"350px", width:"80%"}}>
         <div style={{color:"", fontSize:"24px", marginTop:"100px"}}>{Cookies.get("trinkerrName")}. You have rated all the images, thank you.</div>
         </MuiDialogContent>
       </Dialog>

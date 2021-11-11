@@ -61,59 +61,75 @@ function Register() {
     });
   }
 
-  const onSignInSubmit=(event)=>{
-    event.preventDefault()
-    console.log("h")
-    const phoneNumber = "+91"+data.number;
-    const appVerifier = window.recaptchaVerifier;
-    configureCaptcha()
-    const auth = getAuth();
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-        .then((confirmationResult) => {
-          // SMS sent. Prompt user to type the code from the message, then sign the
-          // user in with confirmationResult.confirm(code).
-          window.confirmationResult = confirmationResult;
-          setOtpSent(true)
-          // ...
-        }).catch((error) => {
-          // Error; SMS not sent
-          // ...
-        });
-  }
-  const auth=getAuth()
+ 
+const handleSendOtp = async (e) => {
+  let temp
+  e.preventDefault()
 
-  const configureCaptcha=()=>{
-    const auth = getAuth();
-window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-  'size': 'invisible',
-  'callback': (response) => {
-    // reCAPTCHA solved, allow signInWithPhoneNumber.
-    onSignInSubmit();
-  }
-}, auth);
-}
-
-const handleOtp=(event)=>{
-  event.preventDefault()
-  const code = otp;
-  window.confirmationResult.confirm(code).then((result) => {
-  // User signed in successfully.
-  const user = result.user;
-  const newUser={
-    name:data.name,
+  const user={
     number:data.number
 };
 
-axios.post("/register", newUser
-).then((response)=>{
-    notify(response.data.message)
-    navigate("/")
-});
-  // ...
-}).catch((error) => {
-  // User couldn't sign in (bad verification code?)
-  // ...
-});
+  
+    if(data.number.length===10 && data.name){
+      ConfigureCaptcha()
+      const phoneNumber = "+91" + data.number
+      console.log(phoneNumber)
+      let appVerifier = window.recaptchaVerifier;
+      firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+          .then((confirmationResult) => {
+              window.confirmationResult = confirmationResult;
+              setOtpSent(true)
+ 
+          }).catch((error) => {
+              //window.grecaptcha.reset(appVerifier)
+              //window.grecaptcha.reset(window.recaptchaVerifier)
+              alert("Limit of 5 uses per phone number per day exceeded")
+          });
+    }
+    else {
+      notify("Please enter a 10 digit number and fill all details compulsorily")
+    }
+  // setIsEmail(true)
+}
+
+
+const handleOtp = (e) => {
+  e.preventDefault();
+  console.log("inside handle_signup_otp")
+  if (otp?.length == 6) {
+      const code = otp.toString();
+      console.log(code, "code")
+      window.confirmationResult.confirm(code).then(async(result) => {
+          const user = result.user;
+          const userdata={
+            name:data.name,
+            number:data.number
+        };
+        
+        await axios.post("/register", userdata
+        ).then((response)=>{
+            notify(response.data.message)
+        });
+
+      }).catch((error) => {
+          console.log(error, "error")
+      });
+  }
+}
+
+
+
+const ConfigureCaptcha = () => {
+  console.log("yaha", data.number, typeof otp_num)
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+      'size': 'invisible',
+      'callback': (response) => {
+    // reCAPTCHA solved, allow signInWithPhoneNumber.
+    console.log("Recaptca varified")
+      },
+      defaultCountry: "IN"
+  });
 }
   return (
     <div className="main-login">
@@ -121,7 +137,7 @@ axios.post("/register", newUser
         
         <div className="login">
             {!otpSent?
-                <EnterNumber data={data} onDataChange={onDataChange} handleClick={onSignInSubmit}/>
+                <EnterNumber data={data} onDataChange={onDataChange} handleClick={handleSendOtp}/>
 
                 :
 
@@ -131,7 +147,6 @@ axios.post("/register", newUser
 
         <div><Link to="/">Already registered? Login instead.</Link></div>
         <ToastContainer theme="colored"/>
-        {data.name} {data.number}
     </div>
   );
 }

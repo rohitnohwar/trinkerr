@@ -36,3 +36,21 @@
     background-color: #FFB600;
     border: 0px;
 }
+
+@media screen and (max-width:1100px) {
+    .login {
+        width:50%;
+    }
+}
+
+@media screen and (max-width:650px) {
+    .login {
+        width:70%;
+    }
+}
+
+@media screen and (max-width:450px) {
+    .login {
+        width:80%;
+    }
+}

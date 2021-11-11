@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
 import axios from "axios";
 import firebase from "../Firebase/Firebase.js"
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import "./Login.css"
 
 function Login() {
@@ -67,100 +66,110 @@ function Login() {
     document.body.style.cursor='default';
 }
 
-let temp1
-const onSignInSubmit=(event)=>{
-  event.preventDefault()
-  console.log("h")
+let temp
+
+
+
+
+
+const handleSendOtp = async (e) => {
+  let temp
+  
+  e.preventDefault()
+
   const user={
     number:data.number
 };
 
-
-axios.post("/login", user
+await axios.post("/login", user
 ).then(async(response) => {
     if(response.data.auth){
-      temp1="present"
-      const phoneNumber = "+91"+data.number;
-      const appVerifier = window.recaptchaVerifier;
-      configureCaptcha()
-      const auth = getAuth();
-      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-          .then((confirmationResult) => {
-            // SMS sent. Prompt user to type the code from the message, then sign the
-            // user in with confirmationResult.confirm(code).
-            window.confirmationResult = confirmationResult;
-            setOtpSent(true)
-            // ...
-          }).catch((error) => {
-            // Error; SMS not sent
-            // ...
-          });
-      }
-      else {
+      temp="present"
+    }
+    else {
         notify(response.data.message)
     }
 }); 
-
-
+  
+  if (temp === "present") {
+      ConfigureCaptcha()
+      const phoneNumber = "+91" + data.number
+      console.log(phoneNumber)
+      let appVerifier = window.recaptchaVerifier;
+      firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+          .then((confirmationResult) => {
+              window.confirmationResult = confirmationResult;
+              setOtpSent(true)
+ 
+          }).catch((error) => {
+              //window.grecaptcha.reset(appVerifier)
+              //window.grecaptcha.reset(window.recaptchaVerifier)
+              alert("Limit of 5 uses per phone number per day exceeded")
+          });
+  }
+  else {
+    //notify("User doesn't exist")
+  }
+  // setIsEmail(true)
 }
 
-const configureCaptcha=()=>{
-  const auth = getAuth();
-window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
-'size': 'invisible',
-'callback': (response) => {
-  // reCAPTCHA solved, allow signInWithPhoneNumber.
-  onSignInSubmit();
-},
-defaultCountry:"IN"
-}, auth);
-onSignInSubmit()
+
+const handleOtp = async(e) => {
+  e.preventDefault();
+  console.log("inside handle_signup_otp")
+  if (otp?.length == 6) {
+      const code = otp.toString();
+      console.log(code, "code")
+      window.confirmationResult.confirm(code).then(async(result) => {
+          const user = result.user;
+          const userdata={
+            number:data.number
+        };
+        
+        await axios.post("/login", userdata
+        ).then(async(response) => {
+            if(response.data.auth){
+              console.log(response.data)
+                await Cookies.set("trinkerrName", response.data.name);
+                await Cookies.set("trinkerrNumber", response.data.number.toString());
+                console.log(Cookies.get("trinkerrName"), Cookies.get("trinkerrNumber"))
+                navigate("/main");
+            }
+            else {
+                notify(response.data.message)
+            }
+        }); 
+
+      }).catch((error) => {
+          console.log(error, "error")
+      });
+  }
 }
 
-const handleOtp=(event)=>{
-event.preventDefault()
-const code = otp;
-window.confirmationResult.confirm(code).then((result) => {
-// User signed in successfully.
-const user = result.user;
-const newUser={
-  number:data.number
-};
 
-axios.post("/login", newUser
-).then(async(response)=>{
-  await Cookies.set("trinkerrName", response.data.name);
-  await Cookies.set("trinkerrNumber", response.data.number.toString());
-  console.log(Cookies.get("trinkerrName"), Cookies.get("trinkerrNumber"))
-  notify(response.data.message)
-  navigate("/main")
-});
-// ...
-}).catch((error) => {
-// User couldn't sign in (bad verification code?)
-// ...
-});
+
+const ConfigureCaptcha = () => {
+  console.log("yaha", data.number, typeof otp_num)
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+      'size': 'invisible',
+      'callback': (response) => {
+    // reCAPTCHA solved, allow signInWithPhoneNumber.
+    console.log("Recaptca varified")
+      },
+      defaultCountry: "IN"
+  });
 }
-
   return (
     <div className="main-login">
         <Header/>
         
         <div className="login">
             {!otpSent?
-                <form action="/entry" method="POST">
-                  <div><input name="number" type="text" placeholder="Enter phone number" className="login-textfield"
-                  value={data.number} onChange={onDataChange}></input></div>
-                  <div><button type="submit" className="login-button" name="sendbutton" value="none" id="sign-in-button" onClick={onSignInSubmit}>Send OTP</button></div>
-                </form>
+              <EnterNumber data={data} onDataChange={onDataChange} handleClick={handleSendOtp}/>
 
-                :
+              :
 
-                <form method="POST">
-                  <div><input type="text" placeholder="Enter OTP" className="login-textfield" 
-                  value={otp} onChange={onOtpChange}></input></div>
-                  <div><button className="login-button" onClick={(event)=>{handleOtp(event)}}>Login</button></div>
-                </form>
+              <EnterOtp otp={otp} onOtpChange={onOtpChange} handleClick={handleOtp}/>
              }
         </div>
 

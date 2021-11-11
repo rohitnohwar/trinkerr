@@ -201,7 +201,7 @@ if(auth){
         <Header />
 
         <div className="main">
-          <div className="user-info"><UserInfo navigate={navigate} setAuth={setAuth}/></div>
+          <UserInfo navigate={navigate} setAuth={setAuth}/>
           <div className="img-container">
             {imgArr.length>-1 && <FaArrowAltCircleLeft className="left-arrow" onClick={previous}/>}
             <img src={(imgArr.length>0 && index<=imgArr.length-1 && index>=0)?imgArr[index]?.source:""} alt="No image left to rate" className="main-img"></img>
@@ -215,7 +215,7 @@ if(auth){
         {index}
         <br></br>
         {imgArr.length}
-        <div className="logout-button-div"><button className="login-button" onClick={reset}>Reset images</button></div>
+        <div className="logout-button-div"><button className="login-button reset-button" onClick={reset}>Reset images</button></div>
     </div>
   );
 }

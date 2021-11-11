@@ -15,7 +15,7 @@ function userInfo(props) {
   }
 
   return (
-    <div>
+    <div className="user-info">
         <div className="user-info-parameter"><img src={Name} className="info-img"></img> {Cookies.get("trinkerrName")}</div>
         <div className="user-info-parameter"><img src={PhoneNumber} className="info-img"></img> {Cookies.get("trinkerrNumber")}</div>
         <div className="logout-button-div"><button className="login-button" onClick={handleLogout}>Logout</button></div>
