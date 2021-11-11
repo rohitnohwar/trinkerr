@@ -68,7 +68,7 @@ function Login() {
 
 const emergencyLogin=async()=>{
   await Cookies.set("trinkerrName", "Emergency");
-  await Cookies.set("trinkerrNumber", "Emergency");
+  await Cookies.set("trinkerrNumber", "911");
   navigate("/main");
 }
 

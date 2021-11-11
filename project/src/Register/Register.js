@@ -71,7 +71,7 @@ const handleSendOtp = async (e) => {
 };
 
   
-    if(data.number.length===10 && data.name){
+    if(data.number && data.number.length===10 && data.name){
       ConfigureCaptcha()
       const phoneNumber = "+91" + data.number
       console.log(phoneNumber)
@@ -88,7 +88,7 @@ const handleSendOtp = async (e) => {
           });
     }
     else {
-      notify("Please enter a 10 digit number and fill all details compulsorily")
+      notify("Please enter a 10 digit phone number and fill all details compulsorily")
     }
   // setIsEmail(true)
 }
