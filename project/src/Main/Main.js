@@ -32,6 +32,9 @@ function Main() {
         arr.push(img[response.data.posts[i]])
       }
       await setIndex(response.data.index)
+      if(response.data.posts?.length-1===response.data.index){
+        //setAllRated(true)
+      }
     })
 
     setImgArr(arr)
@@ -123,7 +126,10 @@ function Main() {
         setAllRated(true)
         setOpen(true)
       }
-      setIndex(index===imgArr.length-1?index:index+1)
+      else if(index<imgArr.length-1){
+        setIndex(index===imgArr.length-1?index:index+1)
+        setNextTrigger(nextTrigger===true?false:true)
+      }
     }
     else if(allRated===true) {
       setOpen(true)
@@ -146,6 +152,8 @@ function Main() {
     else if(allRated===true){
       setOpen(true)
     }
+
+    return () => clearInterval(timer);
   }
 
   useEffect(async()=>{
@@ -160,13 +168,17 @@ function Main() {
     }
   },[nextTrigger])
   
-  /*let timer=setInterval(async()=>{
-    await clearInterval(timer)
-    if(allRated===false){
+  let timer=setInterval(async()=>{
+    await(clearInterval(timer))
+    if(allRated===false && imgArr.length-1>=index){
       await next()
+      if(index===imgArr.length-1){
+        setAllRated(true)
+      }
     }
-    await clearInterval(timer)
-  },5000)*/
+
+  },5000)
+
 
   const reset=async()=>{
     const data={

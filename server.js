@@ -120,14 +120,8 @@ app.post("/next", async function(req, res){
     const number= req.body.number;
     const index= req.body.index;
 
-    console.log(number, index)
     const condition={
         number:number
-    }
-
-    let arr=[]
-    for (let i=0; i<posts.length; i++){
-        arr.push(posts[i].ind)
     }
 
     const update={
@@ -145,7 +139,6 @@ app.post("/next", async function(req, res){
 app.post("/reset", async function(req, res){
     const number= req.body.number;
 
-    console.log(number)
     const condition={
         number:number
     }
