@@ -110,6 +110,8 @@ function Main() {
   }
 
   const previous = async() => {
+    await clearInterval(timer)
+    timer=setInterval(timer,5000)
     setDeletePermit(true)
     if(allRated===false && imgArr.length>0){
       await setImgArr(imgArr.filter((val, ind)=>{
@@ -126,6 +128,8 @@ function Main() {
       setOpen(true)
     }
     setDeleteTrigger(deleteTrigger===true?false:true)
+    await clearInterval(timer)
+    timer=setInterval(timer,5000)
   }
 
 
@@ -144,15 +148,17 @@ function Main() {
   
   let timer=setInterval(async()=>{
     await clearInterval(timer)
+    timer=setInterval(timer,5000)
+    await clearInterval(timer)
     if(allRated===false && imgArr.length-1>=index){
       await next()
       if(index===imgArr.length-1){
         setAllRated(true)
       }
     }
-
+    await clearInterval(timer)
+    timer=setInterval(timer,5000)
   },5000)
-
 
   const reset=async()=>{
     const data={
@@ -165,7 +171,17 @@ function Main() {
     })
   }
 
-
+  /*let timer=(async()=>{
+    clearInterval(timer)
+    if(time===0){
+      await next()
+      time=5
+    }
+    else {
+      time=time-1
+    }
+    clearInterval(timer)
+  },1000)*/
   
 
 if(auth){
