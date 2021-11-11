@@ -26,6 +26,9 @@ function Main() {
     }
 
     await axios.get("/posts", {params:user}).then(async(response)=>{
+      if(response.data.posts.length-1===response.data.index){
+        setAllRated(true)
+      }
       const array=response.data.posts
       console.log(response.data.posts)
       for(let i=0; i<response.data.posts.length; i++){
@@ -97,21 +100,15 @@ function Main() {
     }*/
     const data={
       number:parseInt(Cookies.get("trinkerrNumber")),
-      posts:imgArr
+      posts:imgArr,
+      index:index
     }
     await axios.post("/delete", data).then((response)=>{
-      getPosts()
+
     })
   }
 
   const nextIndex=async()=>{
-    /*await setIndex((index===imgArr.length-1)?index-1:index)
-    let imgA=[]
-    for(let i=0; i<imgArr.length; i++){
-      if(index!==i){
-        imgA.push(imgArr[i])
-      }
-    }*/
     const data={
       number:parseInt(Cookies.get("trinkerrNumber")),
       index:index
@@ -120,42 +117,41 @@ function Main() {
   }
 
   const next = async() => {
-    await setNextPermit(true)
-    if(allRated===false){
-      if(imgArr.length-1===index ){
-        setAllRated(true)
-        setOpen(true)
-      }
-      else if(index<imgArr.length-1){
-        setIndex(index===imgArr.length-1?index:index+1)
-        setNextTrigger(nextTrigger===true?false:true)
-      }
-    }
-    else if(allRated===true) {
-      setOpen(true)
-    }
-  }
-
-  const previous = async() => {
-    //await clearInterval(timer)
-    await clearInterval(timer)
-    await setDeletePermit(true)
-    if(allRated===false){
+    setNextPermit(true)
+    if(imgArr.length>0 && allRated===false){
+      setIndex(index===imgArr.length-1?index:index+1)
       if(imgArr.length-1===index){
         setAllRated(true)
         setOpen(true)
       }
-        //await remove()
-        setImgArr(imgArr.filter((value,ind)=>{return ind!==index}))
-        setIndex((index===imgArr.length-1)?index-1:index)
-        setDeleteTrigger(deleteTrigger===true?false:true)
     }
-    else if(allRated===true){
+    else {
       setOpen(true)
     }
-    await clearInterval(timer)
-    //return () => clearInterval(timer);
+    setNextTrigger(nextTrigger===true?false:true)
   }
+
+  const previous = async() => {
+    clearInterval(timer)
+    setDeletePermit(true)
+    if(allRated===false && imgArr.length>0){
+      await setImgArr(imgArr.filter((val, ind)=>{
+        return ind!==index
+      }))
+      setIndex(imgArr.length-1===index?index-1:index)
+      if(imgArr.length-1===index){
+        setAllRated(true)
+        setOpen(true)
+      }
+    }
+    else {
+      setOpen(true)
+    }
+    setDeleteTrigger(deleteTrigger===true?false:true)
+    clearInterval(timer)
+  }
+
+
 
   useEffect(async()=>{
     if(deletePermit===true){
@@ -170,7 +166,7 @@ function Main() {
   },[nextTrigger])
   
   let timer=setInterval(async()=>{
-    await(clearInterval(timer))
+    await clearInterval(timer)
     if(allRated===false && imgArr.length-1>=index){
       await next()
       if(index===imgArr.length-1){
@@ -188,6 +184,7 @@ function Main() {
     await axios.post("/reset",data).then(async()=>{
       await getPosts()
       setIndex(0)
+      setAllRated(false)
     })
   }
 
@@ -210,11 +207,11 @@ if(auth){
         </div>
         <ToastContainer theme="colored"/>
         <Modal open={open} setOpen={setOpen}/>
-        {imgArr?.map((value, index)=>{return<div>{index} {value?.image}</div>})}
+        {/*{imgArr?.map((value, index)=>{return<div>{index} {value?.image}</div>})}
         <br></br>
         {index}
         <br></br>
-        {imgArr.length}
+        {imgArr.length}*/}
         <div className="logout-button-div"><button className="login-button reset-button" onClick={reset}>Reset images</button></div>
     </div>
   );

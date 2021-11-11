@@ -94,6 +94,7 @@ app.get("/posts", function(req, res){
 app.post("/delete", async function(req, res){
     const number= req.body.number;
     const posts= req.body.posts;
+    const index= req.body.index;
 
 
     const condition={
@@ -106,8 +107,10 @@ app.post("/delete", async function(req, res){
     }
 
     const update={
-        posts:arr
+        posts:arr,
+        index:index
     }
+
     await User.findOneAndUpdate(condition, update,function(err, doc){
         if(err){
             console.log("Something wrong when updating data!");
