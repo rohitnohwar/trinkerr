@@ -22,6 +22,7 @@ const userSchema=new mongoose.Schema({
     name: {type:String, required:true},
     number: {type:Number, required:true},
     index: {type:Number},
+    allRated:{type:Boolean},
     posts:[]
 });
 
@@ -45,6 +46,7 @@ app.post("/register", function(req, res){
                             name:req.body.name,
                             number:req.body.number,
                             posts:[0, 1, 2, 3, 4],
+                            allRated:false,
                             index:0
                         });
                         newUser.save();
@@ -86,7 +88,7 @@ app.get("/posts", function(req, res){
             console.log(err);
         }        
         else {
-            res.json({auth: true, posts:foundUser.posts, index:foundUser.index});
+            res.json({auth: true, posts:foundUser.posts, index:foundUser.index, allRated:foundUser.allRated});
         }
     });
 });
@@ -95,7 +97,7 @@ app.post("/delete", async function(req, res){
     const number= req.body.number;
     const posts= req.body.posts;
     const index= req.body.index;
-
+    const allRated=req.body.allRated;
 
     const condition={
         number:number
@@ -108,7 +110,8 @@ app.post("/delete", async function(req, res){
 
     const update={
         posts:arr,
-        index:index
+        index:index,
+        allRated:allRated
     }
 
     await User.findOneAndUpdate(condition, update,function(err, doc){
@@ -122,13 +125,15 @@ app.post("/delete", async function(req, res){
 app.post("/next", async function(req, res){
     const number= req.body.number;
     const index= req.body.index;
+    const allRated=req.body.allRated;
 
     const condition={
         number:number
     }
 
     const update={
-        index:index
+        index:index,
+        allRated:allRated
     }
     await User.findOneAndUpdate(condition, update,function(err, doc){
         if(err){
@@ -148,7 +153,8 @@ app.post("/reset", async function(req, res){
 
     const update={
         posts:[0,1,2,3,4],
-        index:0
+        index:0,
+        allRated:false
     }
     await User.findOneAndUpdate(condition, update)
     res.json({})

@@ -35,6 +35,7 @@ function Main() {
         arr.push(img[response.data.posts[i]])
       }
       setIndex(response.data.index)
+      setAllRated(response.data.allRated)
       if(response.data.posts?.length-1===response.data.index){
         //setAllRated(true)
       }
@@ -42,10 +43,6 @@ function Main() {
 
     setImgArr(arr)
   }
-
-  useEffect(()=>{
-    getPosts()
-  },[])
 
   const [img, setImg]=useState([    {ind:0, image:"One", source:img1}, {ind:1, image:"Two", source:img2}, 
   {ind:2, image:"Three", source:img3}, {ind:3, image:"Four", source:img4}, {ind:4, image:"Five", source:img5}])
@@ -80,7 +77,8 @@ function Main() {
     const data={
       number:parseInt(Cookies.get("trinkerrNumber")),
       posts:imgArr,
-      index:index
+      index:index,
+      allRated:allRated
     }
     await axios.post("/delete", data).then((response)=>{
 
@@ -90,7 +88,8 @@ function Main() {
   const nextIndex=async()=>{
     const data={
       number:parseInt(Cookies.get("trinkerrNumber")),
-      index:index
+      index:index,
+      allRated:allRated
     }
     await axios.post("/next", data)
   }
@@ -179,6 +178,10 @@ function Main() {
   useEffect(()=>{
     setTime(5)
   },[nextTrigger, deleteTrigger, index])
+
+  useEffect(()=>{
+    getPosts()
+  },[])
   
 
 if(auth){
